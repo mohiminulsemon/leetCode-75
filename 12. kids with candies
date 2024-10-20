@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+           // Find the maximum number of candies any kid currently has
+        int maxCandies = 0;
+        for (int candy : candies) {
+            if (candy > maxCandies) {
+                maxCandies = candy;
+            }
+        }
+
+        // Create the result array based on the comparison
+        vector<bool> result;
+        for (int candy : candies) {
+            // Check if giving extraCandies makes the current kid have the most candies
+            result.push_back(candy + extraCandies >= maxCandies);
+        }
+
+        return result;
+    }
+};
