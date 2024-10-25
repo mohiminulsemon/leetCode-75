@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        int first = INT_MAX, second = INT_MAX;
+
+        for (int num : nums) {
+            if (num <= first) {
+                first = num;  // Update the smallest element
+            } else if (num <= second) {
+                second = num;  // Update the second smallest element
+            } else {
+                // If we find a number larger than both `first` and `second`, we have a triplet
+                return true;
+            }
+        }
+
+        // If we never found a valid triplet, return false
+        return false;
+    }
+};
