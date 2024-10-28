@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+         int i = 0, j = 0;
+
+        // Traverse both strings using two pointers
+        while (i < s.size() && j < t.size()) {
+            if (s[i] == t[j]) {
+                ++i;  // Move 'i' only when there's a match
+            }
+            ++j;  // Always move 'j'
+        }
+
+        // If 'i' has reached the end of 's', it's a subsequence
+        return i == s.size();
+    }
+};
