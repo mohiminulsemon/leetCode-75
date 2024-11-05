@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+          unordered_map<int, int> countMap;
+        
+        // Step 1: Count occurrences of each number in the array
+        for (int num : arr) {
+            countMap[num]++;
+        }
+        
+        unordered_set<int> occurrenceSet;
+        
+        // Step 2: Check if each occurrence count is unique
+        for (auto& pair : countMap) {
+            int occurrence = pair.second;
+            if (occurrenceSet.find(occurrence) != occurrenceSet.end()) {
+                return false;  // Duplicate occurrence found
+            }
+            occurrenceSet.insert(occurrence);
+        }
+        
+        return true;  // All occurrences are unique
+    }
+};
