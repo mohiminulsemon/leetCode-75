@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int equalPairs(vector<vector<int>>& grid) {
+        int n = grid.size();
+        unordered_map<string, int> rowMap;
+
+        // Store string representations of rows in the map
+        for (int i = 0; i < n; ++i) {
+            string rowKey = "";
+            for (int j = 0; j < n; ++j) {
+                rowKey += to_string(grid[i][j]) + ",";
+            }
+            rowMap[rowKey]++;
+        }
+
+        int count = 0;
+
+        // Check for matching columns
+        for (int j = 0; j < n; ++j) {
+            string colKey = "";
+            for (int i = 0; i < n; ++i) {
+                colKey += to_string(grid[i][j]) + ",";
+            }
+            // Count matching columns found in the rowMap
+            if (rowMap.find(colKey) != rowMap.end()) {
+                count += rowMap[colKey];
+            }
+        }
+
+        return count;
+    }
+};
