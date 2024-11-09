@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+         stack<int> st;
+
+        for (int ast : asteroids) {
+            bool destroyed = false;
+
+            // Handle collision scenarios
+            while (!st.empty() && ast < 0 && st.top() > 0) {
+                if (st.top() < -ast) {
+                    // The positive asteroid is smaller and explodes
+                    st.pop();
+                    continue;
+                } else if (st.top() == -ast) {
+                    // Both asteroids have the same size and explode
+                    st.pop();
+                    destroyed = true;
+                    break;
+                } else {
+                    // The positive asteroid is larger and the current asteroid is destroyed
+                    destroyed = true;
+                    break;
+                }
+            }
+
+            // If the current asteroid is not destroyed, add it to the stack
+            if (!destroyed) {
+                st.push(ast);
+            }
+        }
+
+        // Convert stack to vector for the result
+        vector<int> result(st.size());
+        for (int i = st.size() - 1; i >= 0; --i) {
+            result[i] = st.top();
+            st.pop();
+        }
+
+        return result;
+    }
+};
