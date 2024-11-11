@@ -1,0 +1,36 @@
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        queue<int> radiant_queue, dire_queue;
+        int n = senate.size();
+
+        // Step 1: Fill queues with the indices of Radiant and Dire senators
+        for (int i = 0; i < n; ++i) {
+            if (senate[i] == 'R') {
+                radiant_queue.push(i);
+            } else {
+                dire_queue.push(i);
+            }
+        }
+
+        // Step 2: Simulate the rounds
+        while (!radiant_queue.empty() && !dire_queue.empty()) {
+            int radiant_index = radiant_queue.front();
+            int dire_index = dire_queue.front();
+            radiant_queue.pop();
+            dire_queue.pop();
+
+            // Step 3: The senator with the smaller index votes and stays in the game
+            if (radiant_index < dire_index) {
+                // Radiant senator "bans" a Dire senator
+                radiant_queue.push(radiant_index + n);
+            } else {
+                // Dire senator "bans" a Radiant senator
+                dire_queue.push(dire_index + n);
+            }
+        }
+
+        // Step 4: Determine the winning party
+        return radiant_queue.empty() ? "Dire" : "Radiant";
+    }
+};
