@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+         int n = rooms.size();
+        vector<bool> visited(n, false);
+        int visitedCount = 0;
+
+        // Helper function for DFS
+        function<void(int)> dfs = [&](int room) {
+            if (visited[room]) return; // If already visited, skip
+            visited[room] = true;
+            visitedCount++; // Count visited rooms
+            for (int key : rooms[room]) {
+                dfs(key); // Visit rooms using keys
+            }
+        };
+
+        dfs(0); // Start DFS from room 0
+        return visitedCount == n; // Check if all rooms are visited
+    }
+};
