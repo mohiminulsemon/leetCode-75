@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+         // Build adjacency list
+        unordered_map<int, vector<pair<int, int>>> graph; // {node, {neighbor, isOriginalDirection}}
+        for (auto& connection : connections) {
+            int u = connection[0], v = connection[1];
+            graph[u].push_back({v, 1}); // Original direction
+            graph[v].push_back({u, 0}); // Reversed direction
+        }
+
+        int changes = 0;
+        vector<bool> visited(n, false);
+
+        // DFS function
+        function<void(int)> dfs = [&](int node) {
+            visited[node] = true;
+            for (auto& [neighbor, isOriginalDirection] : graph[node]) {
+                if (!visited[neighbor]) {
+                    changes += isOriginalDirection; // Count changes for original edges
+                    dfs(neighbor);
+                }
+            }
+        };
+
+        // Start DFS from node 0
+        dfs(0);
+        return changes;
+    }
+};
