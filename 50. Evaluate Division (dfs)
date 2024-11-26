@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        // Build the graph
+        unordered_map<string, vector<pair<string, double>>> graph;
+        for (int i = 0; i < equations.size(); i++) {
+            string a = equations[i][0];
+            string b = equations[i][1];
+            double val = values[i];
+            graph[a].push_back({b, val});
+            graph[b].push_back({a, 1.0 / val});
+        }
+
+        // Function to perform DFS
+        function<double(string, string, unordered_set<string>&)> dfs = [&](string src, string dest, unordered_set<string>& visited) {
+            if (graph.find(src) == graph.end() || graph.find(dest) == graph.end()) return -1.0;
+            if (src == dest) return 1.0;
+
+            visited.insert(src);
+            for (auto& neighbor : graph[src]) {
+                string nextNode = neighbor.first;
+                double weight = neighbor.second;
+                if (visited.find(nextNode) == visited.end()) {
+                    double result = dfs(nextNode, dest, visited);
+                    if (result != -1.0) {
+                        return weight * result;
+                    }
+                }
+            }
+            return -1.0;
+        };
+
+        // Answer the queries
+        vector<double> results;
+        for (auto& query : queries) {
+            string c = query[0];
+            string d = query[1];
+            unordered_set<string> visited;
+            results.push_back(dfs(c, d, visited));
+        }
+
+        return results;
+    }
+};
