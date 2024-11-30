@@ -1,0 +1,35 @@
+class SmallestInfiniteSet {
+private:
+    priority_queue<int, vector<int>, greater<int>> minHeap; // Min-heap for added-back numbers
+    unordered_set<int> addedBackSet; // Set to track numbers in the heap
+    int nextNumber; // The next smallest number not yet popped
+
+public:
+    SmallestInfiniteSet() {
+        nextNumber = 1; // Initialize the smallest number to 1
+    }
+    
+    int popSmallest() {
+        if (!minHeap.empty()) {
+            int smallest = minHeap.top(); // Get the smallest number from the heap
+            minHeap.pop();
+            addedBackSet.erase(smallest); // Remove it from the set
+            return smallest;
+        }
+        return nextNumber++; // If heap is empty, return and increment the nextNumber
+    }
+    
+    void addBack(int num) {
+        if (num < nextNumber && addedBackSet.find(num) == addedBackSet.end()) {
+            minHeap.push(num); // Add the number back to the heap
+            addedBackSet.insert(num); // Mark it as added-back in the set
+        }
+    }
+};
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
+ * int param_1 = obj->popSmallest();
+ * obj->addBack(num);
+ */
