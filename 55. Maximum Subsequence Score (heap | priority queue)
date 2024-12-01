@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        vector<pair<int, int>> pairs;
+
+        // Pair nums2 with nums1 and sort by nums2 in descending order
+        for (int i = 0; i < n; i++) {
+            pairs.emplace_back(nums2[i], nums1[i]);
+        }
+        sort(pairs.rbegin(), pairs.rend()); // Sort pairs by nums2 in descending order
+
+        priority_queue<int, vector<int>, greater<int>> minHeap; // Min-heap to maintain the top k nums1
+        long long maxScore = 0, sum = 0;
+
+        // Process the pairs to calculate the max score
+        for (const auto& [minVal, num] : pairs) {
+            sum += num;               // Add current nums1 value to the sum
+            minHeap.push(num);        // Push it to the heap
+
+            if (minHeap.size() > k) { // Maintain the heap size to k
+                sum -= minHeap.top(); // Remove the smallest element from the heap
+                minHeap.pop();
+            }
+
+            if (minHeap.size() == k) { // Calculate score if we have exactly k elements
+                maxScore = max(maxScore, sum * minVal);
+            }
+        }
+
+        return maxScore;
+    }
+};
