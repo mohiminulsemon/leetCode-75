@@ -1,0 +1,49 @@
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+          int n = costs.size();
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> leftHeap, rightHeap;
+
+        // Push the first `candidates` workers to the left heap
+        for (int i = 0; i < candidates && i < n; i++) {
+            leftHeap.push({costs[i], i});
+        }
+
+        // Push the last `candidates` workers to the right heap (ensure no overlap with the left heap)
+        for (int i = n - 1; i >= max(n - candidates, candidates); i--) {
+            rightHeap.push({costs[i], i});
+        }
+
+        long long totalCost = 0;
+        int left = candidates, right = n - candidates - 1;
+
+        // Run `k` hiring sessions
+        while (k--) {
+            if (!leftHeap.empty() && (rightHeap.empty() || leftHeap.top() <= rightHeap.top())) {
+                // Choose from the left heap
+                auto [cost, idx] = leftHeap.top();
+                leftHeap.pop();
+                totalCost += cost;
+
+                // Add the next worker from the left side if available
+                if (left <= right) {
+                    leftHeap.push({costs[left], left});
+                    left++;
+                }
+            } else {
+                // Choose from the right heap
+                auto [cost, idx] = rightHeap.top();
+                rightHeap.pop();
+                totalCost += cost;
+
+                // Add the next worker from the right side if available
+                if (left <= right) {
+                    rightHeap.push({costs[right], right});
+                    right--;
+                }
+            }
+        }
+
+        return totalCost;
+    }
+};
