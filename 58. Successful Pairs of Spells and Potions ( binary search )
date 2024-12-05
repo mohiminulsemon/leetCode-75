@@ -8,7 +8,7 @@ public:
         
         for (int spell : spells) {
             // Calculate the minimum required potion strength
-            long long minPotionStrength = (success + spell - 1) / spell; // Ceiling division
+            long long minPotionStrength = (success + spell - 1) / spell; // Ceiling division result
             
             // Binary search for the first potion that meets or exceeds the threshold
             int index = lower_bound(potions.begin(), potions.end(), minPotionStrength) - potions.begin();
